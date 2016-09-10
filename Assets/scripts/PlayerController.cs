@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
     public float speed;
     public Rigidbody rigid;
+    public GameObject pickups;
     public Text countText;
     public Text winText;
 
     private int count;
+    private int winCondition;
+    private SceneController scene;
 
     void Start() {
         count = 0;
         rigid = GetComponent<Rigidbody>();
         setCountText();
         winText.text = "";
+        winCondition = pickups.transform.childCount - 1;
+        scene = new SceneController();
     }
 
     void FixedUpdate() {
@@ -35,8 +39,9 @@ public class PlayerController : MonoBehaviour {
 
     void setCountText() {
         countText.text = "Count: " + count.ToString();
-        if (count > 7) {
-            winText.text = "You win again, biatch";
+        if (count > winCondition) {
+            winText.text = "Level complete";
+            scene.loadNextScene();
         }   
     }
 }
